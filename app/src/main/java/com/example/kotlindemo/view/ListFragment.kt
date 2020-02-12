@@ -9,16 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kotlindemo.R
-import com.example.kotlindemo.model.Animal
+import com.example.kotlindemo.model.Results
 import com.example.kotlindemo.viewmodel.ListFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : Fragment() {
 
     private lateinit var listFragmentViewModel: ListFragmentViewModel
-    private val listAnimalAdapter = AnimalAdapter(arrayListOf())
+    private val listAnimalAdapter = MovieAdapter(arrayListOf())
 
-    private val animalDataObserver = Observer<List<Animal>> { list ->
+    private val animalDataObserver = Observer<List<Results>> { list ->
         list?.let {
             rvAnimals.visibility = View.VISIBLE
             listAnimalAdapter.updateList(it)
@@ -53,7 +53,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listFragmentViewModel = ViewModelProviders.of(this).get(ListFragmentViewModel::class.java)
-        listFragmentViewModel.animals.observe(this, animalDataObserver)
+        listFragmentViewModel.movies.observe(this, animalDataObserver)
         listFragmentViewModel.loading.observe(this, loadingObserver)
         listFragmentViewModel.loadError.observe(this, errorObserver)
         listFragmentViewModel.refresh()

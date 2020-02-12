@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.kotlindemo.view.ListFragment"
-        android:label="fragment_list"
+        android:label="Movies"
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/actionGoToDetails"
@@ -17,10 +17,13 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.kotlindemo.view.DetailsFragment"
-        android:label="fragment_details"
+        android:label="Movie Details"
         tools:layout="@layout/fragment_details">
         <action
             android:id="@+id/actionGoToList"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="movie"
+            app:argType="com.example.kotlindemo.model.Results" />
     </fragment>
 </navigation>

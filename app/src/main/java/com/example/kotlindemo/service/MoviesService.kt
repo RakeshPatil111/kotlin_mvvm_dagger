@@ -4,15 +4,15 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AnimalService {
-    private val BASE_URL = "http://192.168.0.107/animals/"
+class MoviesService {
+    private val BASE_URL = "https://api.themoviedb.org/"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
-        .create(AnimalAPIS::class.java)
+        .create(MoviesAPIs::class.java)
 
-    fun getAnimals() = retrofit.getAnimals()
+    fun getPopularMovies(apiKey: String) = retrofit.getPopularMovies(apiKey)
 }

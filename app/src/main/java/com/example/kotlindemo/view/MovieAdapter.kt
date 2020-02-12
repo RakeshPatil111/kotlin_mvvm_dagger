@@ -3,15 +3,16 @@ package com.example.kotlindemo.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlindemo.R
-import com.example.kotlindemo.model.Animal
+import com.example.kotlindemo.model.Results
 import com.example.kotlindemo.util.getProgressDrawable
 import com.example.kotlindemo.util.loadImage
 import kotlinx.android.synthetic.main.animal_item.view.*
 
-class AnimalAdapter(private val animalList: ArrayList<Animal>) :
-    RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder>() {
+class MovieAdapter(private val moviesList: ArrayList<Results>) :
+    RecyclerView.Adapter<MovieAdapter.AnimalViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
         return AnimalViewHolder(
             LayoutInflater.from(parent.context).inflate(
@@ -22,19 +23,27 @@ class AnimalAdapter(private val animalList: ArrayList<Animal>) :
         )
     }
 
-    override fun getItemCount() = animalList.size
+    override fun getItemCount() = moviesList.size
 
     override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
-        holder.view.tvAnimalName.text = animalList[position].name
+        val result = moviesList[position]
+        //Log.i("Poster path : ", result.posterPath)
+        //holder.view.tvAnimalName.text = result.title
         holder.view.ivAnimal.loadImage(
-            animalList[position].image,
+            "https://image.tmdb.org/t/p/w500" + result.posterPath,
             getProgressDrawable(holder.view.context)
         )
+
+        // set on click listener for movie
+        holder.view.clMovie.setOnClickListener {
+            val action = ListFragmentDirections.actionGoToDetails(result)
+            Navigation.findNavController(holder.view).navigate(action)
+        }
     }
 
-    fun updateList(newAnimalList: List<Animal>) {
-        animalList.clear()
-        animalList.addAll(newAnimalList)
+    fun updateList(newAnimalList: List<Results>) {
+        moviesList.clear()
+        moviesList.addAll(newAnimalList)
         notifyDataSetChanged()
     }
 
