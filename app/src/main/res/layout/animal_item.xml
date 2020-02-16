@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/clMovie"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout>
 
-    <ImageView
-        android:id="@+id/ivAnimal"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/tvAnimalName"
-        style="@style/Title"
+        <variable
+            name="movie"
+            type="com.example.kotlindemo.model.Results" />
+
+        <variable
+            name="onClick"
+            type="com.example.kotlindemo.util.OnMovieClick" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/clMovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="#afff"
-        android:gravity="center"
-        android:text="Animal Name"
-        app:layout_constraintBottom_toBottomOf="@+id/ivAnimal"
-        app:layout_constraintEnd_toEndOf="@+id/ivAnimal"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@+id/ivAnimal" />
+        android:onClick="@{onClick::onClick}"
+        android:tag="@{movie.title}">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/ivAnimal"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:imageUrl="@{`https://image.tmdb.org/t/p/w500`+ movie.posterPath}"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAnimalName"
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="#afff"
+            android:gravity="center"
+            android:text="@{movie.title}"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/ivAnimal"
+            app:layout_constraintEnd_toEndOf="@+id/ivAnimal"
+            app:layout_constraintStart_toStartOf="@+id/ivAnimal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

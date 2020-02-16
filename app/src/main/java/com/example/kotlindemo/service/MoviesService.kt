@@ -1,18 +1,17 @@
 package com.example.kotlindemo.service
 
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.kotlindemo.di.DaggerMovieApiCompoenent
+import javax.inject.Inject
 
 class MoviesService {
-    private val BASE_URL = "https://api.themoviedb.org/"
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-        .create(MoviesAPIs::class.java)
+    @Inject
+    lateinit var retrofit: MoviesAPIs
+
+    // here we are getting our object from dagger
+    init {
+        DaggerMovieApiCompoenent.create().injectService(this)
+    }
 
     fun getPopularMovies(apiKey: String) = retrofit.getPopularMovies(apiKey)
 }

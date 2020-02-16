@@ -1,4 +1,4 @@
-package com.example.kotlindemo.view
+package com.example.kotlindemo.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kotlindemo.R
 import com.example.kotlindemo.model.Results
+import com.example.kotlindemo.view.adapter.MovieAdapter
 import com.example.kotlindemo.viewmodel.ListFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
+
+/**
+ * This class used to show list of movies
+ * ViewModel holds data which is got from repository (WEB Service)
+ * Observers are set to observe data, progress as well as error
+ */
 
 class ListFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.example.kotlindemo.view
+package com.example.kotlindemo.view.fragment
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -6,39 +6,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.kotlindemo.R
+import com.example.kotlindemo.databinding.FragmentDetailsBinding
+import com.example.kotlindemo.model.AnimalPalette
 import com.example.kotlindemo.model.Results
-import com.example.kotlindemo.util.getProgressDrawable
-import com.example.kotlindemo.util.loadImage
 import kotlinx.android.synthetic.main.fragment_details.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [DetailsFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [DetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * This class used for showing details of Movie
+ * Data is set using SafeArgument and Data Binding
+ * Android Palette library is used to change background of activity according movie image
  */
+
 class DetailsFragment : Fragment() {
     var movie: Results? = null
+    private lateinit var dataBinding: FragmentDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,25 +45,15 @@ class DetailsFragment : Fragment() {
             movie = DetailsFragmentArgs.fromBundle(it).movie
         }
 
-        //set fields
-        tvMovieName.text = movie?.title
-        tvOverview.text = movie?.overview
-
-        // get context to load image
-        context?.let {
-            ivMovie.loadImage(
-                "https://image.tmdb.org/t/p/w500" + movie?.posterPath,
-                getProgressDrawable(it)
-            )
-        }
+        dataBinding.movie = movie
 
         //set background to activity
         movie?.posterPath?.let {
-            sutBackground("https://image.tmdb.org/t/p/w500$it")
+            setBackground("https://image.tmdb.org/t/p/w500$it")
         }
     }
 
-    private fun sutBackground(url: String) {
+    private fun setBackground(url: String) {
         Glide.with(this)
             .asBitmap()
             .load(url)
@@ -81,8 +67,11 @@ class DetailsFragment : Fragment() {
                         .generate {
                             val intColor = it?.darkMutedSwatch?.rgb ?: 0
                             clDetails.setBackgroundColor(intColor)
-                            tvMovieName.setTextColor(it?.lightVibrantSwatch?.rgb ?: 0)
-                            tvOverview.setTextColor(it?.lightVibrantSwatch?.rgb ?: 0)
+                            dataBinding.palette = AnimalPalette(intColor)
+
+                            // this can be done using data bing ... consider this as TO DO and do it
+                            tvMovieName.setTextColor(it?.lightMutedSwatch?.rgb ?: 0)
+                            tvOverview.setTextColor(it?.lightMutedSwatch?.rgb ?: 0)
                         }
                 }
             })

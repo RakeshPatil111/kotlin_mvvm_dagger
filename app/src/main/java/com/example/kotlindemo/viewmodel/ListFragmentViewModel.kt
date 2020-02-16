@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.kotlindemo.R
+import com.example.kotlindemo.di.DaggerViewModelComponent
 import com.example.kotlindemo.model.Movies
 import com.example.kotlindemo.model.Results
 import com.example.kotlindemo.service.MoviesService
@@ -12,14 +13,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class ListFragmentViewModel(application: Application) : AndroidViewModel(application) {
     val movies by lazy { MutableLiveData<List<Results>>() }
     val loadError by lazy { MutableLiveData<Boolean>() }
     val loading by lazy { MutableLiveData<Boolean>() }
     private lateinit var myApplication: Application
-    private val retrofit = MoviesService()
+
+    @Inject
+    lateinit var retrofit: MoviesService
+
     private val disposable = CompositeDisposable()
+
+    init {
+        DaggerViewModelComponent.create().inject(this)
+    }
 
     fun refresh() {
         loading.value = true
